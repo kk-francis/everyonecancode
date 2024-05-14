@@ -1,14 +1,11 @@
-import { defineConfig } from "vite";
-
-const codespaceName = process.env['CODESPACE_NAME'];
-const codespaceDomain = process.env['GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN'];
-const hmrPort = 5173;
-
-const hmrRemoteHost = codespaceName ? `${codespaceName}-${hmrPort}.${codespaceDomain}` : 'localhost';
-const hmrRemotePort = codespaceName ? 443 : hmrPort;
-const hmrRemoteProtocol = codespaceName ? 'wss' : 'ws';
-
 export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+    extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
+  },
   server: {
     hmr: {
         protocol: hmrRemoteProtocol,
@@ -16,9 +13,5 @@ export default defineConfig({
         port: hmrPort,
         clientPort: hmrRemotePort
     }
-  },
-  plugins: [vue()],
-  resolve: {
-
   },
 });
